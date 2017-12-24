@@ -12,13 +12,13 @@ class Component:
             return self.b
         return self.a
 
-def dfs(comps, ports, seen, cur, l):
-    mx = (l, 0)
+def dfs(comps, ports, seen, cur):
+    mx = (0, 0)
     for i in ports[cur]:
         if i in seen:
             continue
-        best = dfs(comps, ports, seen | {i}, comps[i].other(cur), l + 1)
-        mx = max(mx, (best[0], best[1] + comps[i].strength))
+        best = dfs(comps, ports, seen | {i}, comps[i].other(cur))
+        mx = max(mx, (best[0] + 1, best[1] + comps[i].strength))
     return mx
 
 def main():
@@ -30,7 +30,7 @@ def main():
         ports[a].append(i)
         ports[b].append(i)
     
-    print(dfs(components, ports, set(), 0, 0))
+    print(dfs(components, ports, set(), 0))
 
 
 
