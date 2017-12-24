@@ -12,7 +12,10 @@ class Component:
             return self.b
         return self.a
 
+MEMO = {}
 def dfs(comps, ports, seen, cur):
+    if (seen, cur) in MEMO:
+        return MEMO[(seen, cur)]
     mx = 0
     for i in ports[cur]:
         if i in seen:
@@ -22,6 +25,7 @@ def dfs(comps, ports, seen, cur):
                                          ports,
                                          seen | {i},
                                          comps[i].other(cur)))
+    MEMO[(seen, cur)] = mx
     return mx
 
 def main():
@@ -33,7 +37,7 @@ def main():
         ports[a].append(i)
         ports[b].append(i)
     
-    print(dfs(components, ports, set(), 0))
+    print(dfs(components, ports, frozenset(), 0))
 
 
 
